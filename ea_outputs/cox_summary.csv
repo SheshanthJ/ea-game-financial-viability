@@ -1,0 +1,7 @@
+covariate,coef,exp(coef),p
+log_price,0.204,1.226,0.0
+log_owners,0.12,1.127,0.0
+pos_ratio,0.329,1.389,0.0
+reviews_per_month,0.063,1.065,0.002
+dev_other_games,0.152,1.164,0.0
+tag_year_saturation,-0.019,0.981,0.543

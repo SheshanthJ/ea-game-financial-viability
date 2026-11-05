@@ -1,0 +1,83 @@
+﻿Status counts:
+ status
+still_ea     1705
+graduated     888
+removed       361
+Name: count, dtype: int64
+
+Classification set: 2593 games | graduated rate = 34.2% (this is the PR-AUC baseline)
+
+Hold-out split (80/20):
+       model  ROC_AUC  PR_AUC    F1
+      LogReg    0.692   0.569 0.521
+RandomForest    0.693   0.545 0.511
+     XGBoost    0.699   0.554 0.522
+
+5-fold cross-validation (use THIS table in the report):
+setting        model  ROC_AUC  ROC_AUC_sd  PR_AUC    F1
+   main       LogReg    0.752       0.014   0.617 0.608
+   main RandomForest    0.746       0.017   0.601 0.588
+   main      XGBoost    0.739       0.018   0.598 0.580
+
+Sensitivity: removed games counted as failures | n = 2954 | graduated rate = 30.1%
+        setting        model  ROC_AUC  ROC_AUC_sd  PR_AUC    F1
+removed=failure       LogReg    0.740       0.026   0.566 0.560
+removed=failure RandomForest    0.743       0.027   0.570 0.558
+removed=failure      XGBoost    0.738       0.028   0.566 0.559
+
+Cox PH concordance: 0.659
+                      coef  exp(coef)      p
+covariate                                   
+log_price            0.204      1.226  0.000
+log_owners           0.120      1.127  0.000
+pos_ratio            0.329      1.389  0.000
+reviews_per_month    0.063      1.065  0.002
+dev_other_games      0.152      1.164  0.000
+tag_year_saturation -0.019      0.981  0.543
+
+Proportional hazards test, approximate (p < 0.05 = effect may change over time):
+                     test_statistic      p
+dev_other_games               0.809  0.369
+log_owners                   78.820  0.000
+log_price                     6.293  0.012
+pos_ratio                     2.767  0.096
+reviews_per_month             6.768  0.009
+tag_year_saturation           0.303  0.582
+
+Cause-specific Cox: graduation (events = 888, concordance = 0.664)
+                      coef  exp(coef)      p
+covariate                                   
+log_price            0.204      1.226  0.000
+log_owners           0.113      1.119  0.000
+pos_ratio            0.343      1.409  0.000
+reviews_per_month    0.065      1.068  0.001
+dev_other_games      0.140      1.150  0.000
+tag_year_saturation -0.016      0.984  0.605
+
+Cause-specific Cox: removal (events = 361, concordance = 0.583)
+                      coef  exp(coef)      p
+covariate                                   
+log_price           -0.025      0.975  0.519
+log_owners           0.039      1.039  0.323
+pos_ratio           -0.140      0.870  0.000
+reviews_per_month    0.037      1.037  0.409
+dev_other_games      0.122      1.130  0.000
+tag_year_saturation -0.007      0.993  0.870
+
+Realised outcome (%) by predicted risk tier:
+status       n  graduated  removed  still_ea
+risk_tier                                   
+Low        985       52.6     11.0      36.4
+Medium     984       25.2     13.2      61.6
+High       985       12.4     12.5      75.1
+
+OLD->NEW change by outcome (median) - label validation, NOT features:
+                          review_score_change  ...       n
+status                                         ...        
+graduated                             -0.0380  ...   888.0
+still_ea                              -0.0250  ...  1705.0
+MWU p (grad vs still_ea)               0.1778  ...     NaN
+
+[3 rows x 4 columns]
+
+Outputs saved in ./ea_outputs/

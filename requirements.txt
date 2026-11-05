@@ -1,0 +1,8 @@
+lifelines==0.30.3
+matplotlib==3.11.0
+numpy==2.5.1
+pandas==2.3.3
+scikit-learn==1.9.1
+scipy==1.18.1
+shap==0.54.1
+xgboost==3.4.1

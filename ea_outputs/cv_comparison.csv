@@ -1,0 +1,4 @@
+setting,model,ROC_AUC,ROC_AUC_sd,PR_AUC,F1
+main,LogReg,0.752,0.014,0.617,0.608
+main,RandomForest,0.746,0.017,0.601,0.588
+main,XGBoost,0.739,0.018,0.598,0.58

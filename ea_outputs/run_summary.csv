@@ -1,0 +1,11 @@
+,value
+n_still_ea,1705.0
+n_graduated,888.0
+n_removed,361.0
+n_classification,2593.0
+graduated_rate_classification(PR-AUC baseline),0.3425
+cox_graduation_concordance,0.659
+cause_specific_events_graduation,888.0
+cause_specific_concordance_graduation,0.664
+cause_specific_events_removal,361.0
+cause_specific_concordance_removal,0.583
