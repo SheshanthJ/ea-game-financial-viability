@@ -2,3 +2,4 @@ setting,model,ROC_AUC,ROC_AUC_sd,PR_AUC,F1
 removed=failure,LogReg,0.74,0.026,0.566,0.56
 removed=failure,RandomForest,0.743,0.027,0.57,0.558
 removed=failure,XGBoost,0.738,0.028,0.566,0.559
+removed=failure,LightGBM,0.735,0.028,0.567,0.553

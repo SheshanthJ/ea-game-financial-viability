@@ -2,3 +2,4 @@ model,ROC_AUC,PR_AUC,F1
 LogReg,0.692,0.569,0.521
 RandomForest,0.693,0.545,0.511
 XGBoost,0.699,0.554,0.522
+LightGBM,0.693,0.548,0.508

@@ -16,7 +16,7 @@ Usage:
 !! Column names below are from memory of the Kaggle files. Open both CSVs, check the
 !! headers, and fix OLD_COLS / NEW_COLS before running on real data.
 """
-import argparse, os, warnings
+import argparse, os, re, warnings
 import numpy as np, pandas as pd
 import matplotlib
 matplotlib.use("Agg")
@@ -30,6 +30,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, average_precision_score, f1_score
 from xgboost import XGBClassifier
+try:
+    from lightgbm import LGBMClassifier
+except ImportError:
+    LGBMClassifier = None
+    print('WARNING: lightgbm not installed (pip install lightgbm) - LightGBM will be skipped')
 from lifelines import CoxPHFitter, KaplanMeierFitter
 from lifelines.statistics import proportional_hazard_test
 import shap
@@ -132,7 +137,7 @@ def build_features(ea, old, old_date):
     # top-10 tags as binary columns
     top = df["main_tag"].value_counts().head(10).index
     for t in top:
-        df["tag_" + str(t).replace(" ", "_")] = (df["main_tag"] == t).astype(int)
+        df["tag_" + re.sub(r"[^0-9A-Za-z_]", "_", str(t))] = (df["main_tag"] == t).astype(int)
 
     feats = ["age_days", "log_price", "log_owners", "log_reviews", "pos_ratio", "reviews_per_month",
              "log_playtime", "achievements", "launch_month", "dev_other_games", "tag_year_saturation"] \
@@ -142,13 +147,18 @@ def build_features(ea, old, old_date):
 
 # ============================== 3. MODELS ==============================================
 def make_models(pos_weight):
-    return {
+    models = {
         "LogReg": make_pipeline(StandardScaler(), LogisticRegression(max_iter=2000, class_weight="balanced")),
         "RandomForest": RandomForestClassifier(400, min_samples_leaf=3, class_weight="balanced", random_state=42),
         "XGBoost": XGBClassifier(n_estimators=300, max_depth=4, learning_rate=0.05, subsample=0.8,
                                  colsample_bytree=0.8, scale_pos_weight=pos_weight,
                                  eval_metric="logloss", random_state=42),
     }
+    if LGBMClassifier is not None:
+        models["LightGBM"] = LGBMClassifier(n_estimators=300, max_depth=4, num_leaves=15, learning_rate=0.05,
+                                            subsample=0.8, subsample_freq=1, colsample_bytree=0.8,
+                                            scale_pos_weight=pos_weight, random_state=42, verbose=-1, n_jobs=-1)
+    return models
 
 
 def cv_eval(X, y, tag):

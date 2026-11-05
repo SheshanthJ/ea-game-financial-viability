@@ -12,18 +12,21 @@ Hold-out split (80/20):
       LogReg    0.692   0.569 0.521
 RandomForest    0.693   0.545 0.511
      XGBoost    0.699   0.554 0.522
+    LightGBM    0.693   0.548 0.508
 
 5-fold cross-validation (use THIS table in the report):
 setting        model  ROC_AUC  ROC_AUC_sd  PR_AUC    F1
    main       LogReg    0.752       0.014   0.617 0.608
    main RandomForest    0.746       0.017   0.601 0.588
    main      XGBoost    0.739       0.018   0.598 0.580
+   main     LightGBM    0.737       0.018   0.597 0.582
 
 Sensitivity: removed games counted as failures | n = 2954 | graduated rate = 30.1%
         setting        model  ROC_AUC  ROC_AUC_sd  PR_AUC    F1
 removed=failure       LogReg    0.740       0.026   0.566 0.560
 removed=failure RandomForest    0.743       0.027   0.570 0.558
 removed=failure      XGBoost    0.738       0.028   0.566 0.559
+removed=failure     LightGBM    0.735       0.028   0.567 0.553
 
 Cox PH concordance: 0.659
                       coef  exp(coef)      p
