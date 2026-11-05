@@ -17,7 +17,7 @@ Take games tagged **Early Access in an old Steam snapshot** (May 2019) and look 
 
 All features come from the **old** snapshot and all labels from the **new** one, so there is no time leakage.
 
-Models: Logistic Regression, Random Forest, XGBoost (classification); Cox proportional hazards, Kaplan-Meier and cause-specific Cox (graduation vs removal); SHAP for explainability; out-of-fold risk tiers as a "financial risk curve".
+Models: Logistic Regression, Random Forest, XGBoost, LightGBM (classification); Cox proportional hazards, Kaplan-Meier and cause-specific Cox (graduation vs removal); SHAP for explainability; out-of-fold risk tiers as a "financial risk curve".
 
 ## Data
 
@@ -50,8 +50,9 @@ Outputs are written to `ea_outputs/`; the full console log is in `run_log.txt`.
 | Logistic Regression | 0.752 | 0.617 | 0.608 |
 | Random Forest | 0.746 | 0.601 | 0.588 |
 | XGBoost | 0.739 | 0.598 | 0.580 |
+| LightGBM | 0.737 | 0.597 | 0.582 |
 
-Sensitivity (removed games counted as failures, n = 2,954, baseline 30.1%): ROC-AUC 0.740 / 0.743 / 0.738 (LogReg / RF / XGB).
+Sensitivity (removed games counted as failures, n = 2,954, baseline 30.1%): ROC-AUC 0.740 / 0.743 / 0.738 / 0.735 (LogReg / RF / XGB / LightGBM).
 Single 80/20 hold-out ROC-AUC is about 0.69-0.70; repeated CV is the main result.
 
 **Survival analysis**: Cox concordance 0.659. Cause-specific Cox: graduation 0.664, removal 0.583.
